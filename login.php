@@ -27,7 +27,7 @@ session_start();
 </form>
 <script>
     $(document).ready(function() {
-        $("#loginForm").on("submit", function(e) {
+        $("#loginform").on("submit", function(e) {
     
         var login=document.getElementById("login").value;
         var password=document.getElementById("pass").value;
