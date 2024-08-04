@@ -39,13 +39,13 @@ session_start();
             password: password
         },
         success: function(response) {
-            console.log(response); // Add this line to log the response
+            console.log(response);
 
             if (response === 'success') {
-                // Redirect to the dashboard or desired page
+                
                 window.location.href = 'index.php';
             } else {
-                // Show error message or perform other actions
+                
                 alert('Invalid login or password');
             }
         },
