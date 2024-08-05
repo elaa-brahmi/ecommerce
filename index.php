@@ -17,7 +17,7 @@ session_start();
       <ul class="right hide-on-med-and-down" >
         <li><a href="">home</a></li>
         <?php
-         if($_SESSION["username"]=="ela"){
+         if(isset($_SESSION["username"]) && $_SESSION["username"] =="ela"){
            echo '<li><a href="clients.php">see clients</a></li>';}
         ?>
         <li><a href="about.html">about</a></li>
