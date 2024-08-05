@@ -29,8 +29,8 @@ session_start();
     $(document).ready(function() {
         $("#loginform").on("submit", function(e) {
     
-        var login=document.getElementById("login").value;
-        var password=document.getElementById("pass").value;
+        var login=document.getElementById("login").val();
+        var password=document.getElementById("pass").val();
         $.ajax({
         url: './php/loginControl.php',
         type: 'POST',
