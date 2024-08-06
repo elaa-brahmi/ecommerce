@@ -23,20 +23,23 @@ session_start();
     <input type="password" class="form-control" id="pass">
   </div>
   
-  <button type="submit" class="btn btn-primary" >Submit</button>
+  <button type="submit" class="btn btn-primary" >Submit</button><br>
+  not yet a member? <a href="registerClient.php" >sign in</a>
 </form>
 <script>
     $(document).ready(function() {
         $("#loginform").on("submit", function(e) {
-    
-        var login=document.getElementById("login").val();
-        var password=document.getElementById("pass").val();
-        $.ajax({
-        url: './php/loginControl.php',
-        type: 'POST',
-        data: {
-            login: login,
-            password: password
+            e.preventDefault();
+            var login=document.getElementById("login").value;
+            var password=document.getElementById("pass").value;
+            console.log(login);
+            
+            $.ajax({
+            url: './php/loginControl.php',
+            type: 'POST',
+            data: {
+                login: login,
+                password: password
         },
         success: function(response) {
             console.log(response);
