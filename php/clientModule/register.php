@@ -17,6 +17,7 @@ try{
     $stmt->bindparam(5,$adress);
     $stmt->bindparam(6,$password);
     $stmt->execute();
+    $_SESSION["login"]=$name;
     $_SESSION["password"]=$password;
     $_SESSION["role"]="client";
     echo "success";
