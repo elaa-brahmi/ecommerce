@@ -34,7 +34,7 @@ try {
 
     // Commit the transaction
     $pdo->commit();
-
+    $_SESSION["id"]=$idClient;
     $_SESSION["login"] = $name;
     $_SESSION["password"] = $password;
     $_SESSION["role"] = "client";
