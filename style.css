@@ -13,3 +13,11 @@ ul li a{
     padding-top:38px;
     padding-left:190px;
 }
+#cart{
+    position:relative;
+    width:400px;
+    height:400px;
+    border-radius:20px;
+    background-color: cadetblue;
+    float:right;
+}
