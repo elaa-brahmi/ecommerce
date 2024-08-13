@@ -1,9 +1,6 @@
 <!doctype html>
 <?php
 include "php/authentification.php";
-//session_start();
-
-
 ?>
 <html>
 <head>
@@ -36,20 +33,12 @@ include "php/authentification.php";
                 echo '<li><a href="clients.php">see clients</a></li>';}
             ?>
             <li><a href="about.html">about</a></li>
-            <li><a href="cart.php">cart</a></li>
+            <li><a href="panier.php">cart</a></li>
             <li><a href="profile.php">profile</a></li>
         </ul>
     </div>
 </nav>
-<div id="cart"style="display:none;">
-    <button style="float:right; " onclick="closeCart()">X</button>
 
-
-
-
-
-
-</div>
 <div class="div1">
     <p>
         <h1>SHOP ALL</h1>
@@ -72,10 +61,7 @@ include "php/authentification.php";
 <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script>
-    function closeCart(){
-        var div1=document.getElementById("cart");
-        div1.style.display="none";
-    }
+    
     $(document).ready(function() {
         var table = $('#tabproduct').DataTable({
             "ajax": {
@@ -98,32 +84,39 @@ include "php/authentification.php";
                 {
                     "data": "etat",
                     "render": function(data, type, row) {
-                        if(data == "add to bag") {
-                            return "<button class='add-to-bag'>add to bag</button>";
-                        } else {
-                            return "coming soon";
-                        }
-                    }
+                        <?php if($_SESSION["role"]=="client") { ?>
+                            if(data == "add to bag") {
+                                return "<button class='add-to-bag'>add to bag</button>";
+                            } else {
+                                return "coming soon";
+                            }
+                       
+                        <?php  } else { ?>
+                            return data;
+                        <?php } ?>
+                }
                 }
             ]
         });
-
         $('#tabproduct').on('click', '.add-to-bag', function() {
             var idProduct = $(this).closest('tr').find('td:first').text();
+            var name= $(this).closest('tr').find('td:eq(1)').text();
             var quantity= $(this).closest('tr').find('td:eq(2)').text();
             var price  = $(this).closest('tr').find('td:eq(4)').text();
-            console.log(id);
+            console.log(idProduct);
             console.log(price);
             console.log(quantity);
             $.ajax({
-                url: "./php/commandeModule/addcommande.php",
+                url: "./php/commandeModule/addtopanier.php",
                 type: "POST",
                 data: {
+                    name:name,
                     idProduct: idProduct,
                     price:price,
                     quantity:quantity
                 },
                 success: function(response) {
+                    console.log(response);
                     alert("added successfully");
                 },
                 error: function(xhr, status, error) {
@@ -144,10 +137,7 @@ include "php/authentification.php";
             });
         });
     });
-    $('#tabproduct').on('click', '.add-to-bag', function() {
-            console.log("button clicked");
-            var div1=document.getElementById("cart");
-            div1.style.display="block";});
+   
 </script>
 </body>
 </html>
