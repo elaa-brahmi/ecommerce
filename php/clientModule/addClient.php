@@ -1,6 +1,7 @@
 <?php
-try{
 include "../connection.php";
+try{
+
 $name = $_POST["name"];
 $lname = $_POST["lastName"];
 $phone = $_POST["phone"];
