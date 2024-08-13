@@ -21,6 +21,8 @@ try{
             echo 'success_admin'; // the response
         }
         else{
+            $_SESSION["id"]=$row["idUser"];
+            $_SESSION["role"]="client";
             echo 'success_client'; // this is the response
         }
     }
