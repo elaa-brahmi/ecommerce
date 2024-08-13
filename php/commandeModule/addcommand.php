@@ -1,31 +1,32 @@
 <?php
-include "connection.php";
+include "../connection.php";
 session_start();
 if(isset($_SESSION["id"])){
     $idClient=$_SESSION["id"];
+}
+else{
+    echo 'the client is not logged in';
 }
 $idProduct=$_POST["idProduct"];
 $price=$_POST["price"];
 $quantity=$_POST["quantity"];
 try{
     $pdo->beginTransaction();
-    $req="insert into commande(idClient,dateCommande) values(?,?)";
+    $req="insert into commande (idClient,dateCommande) values (?,NOW())";
     $stmt=$pdo->prepare($req);
     $stmt->bindparam(1,$idClient);
-    $stmt->bindparam(2,NOW());
     $stmt->execute();
     $idCommande=$pdo->lastInsertId();
-    $sql="insert into ligne_commande(idProduct,idCommande,price,quantity) values (?,?,?,?)";
+    $sql="insert into ligne_commande(idProduct,idCommande,price,quantity) values (?,?,?,1)";
     $stmt=$pdo->prepare($sql);
     $stmt->bindparam(1,$idProduct);
     $stmt->bindparam(2,$idCommande);
     $stmt->bindparam(3,$price);
-    $stmt->bindparam(4,$quantity);
+    
     $stmt->execute();
-    $req2='update products set quantity=quantity-? where idProduct=?';
+    $req2='update products set quantity=quantity-1 where idProduct=?';
     $stmt = $pdo->prepare($req2);
-    $stmt->bindParam(1, 1);
-    $stmt->bindParam(2, $idProduct);
+    $stmt->bindParam(1, $idProduct);
     $stmt->execute();
     $pdo->commit();
 
