@@ -8,7 +8,7 @@
 <link href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
 </head>
 <body><br>
-<a href="addClient.php"  class="btn btn-primary" id="addClient">add a client </a>
+<a href="addClient.php"  class="btn btn-primary" >add a client </a>
 <section class="mt-section" >
         <div class="row">
             <table id="tabclient" class="table table-striped"> <thead><tr>
