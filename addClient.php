@@ -43,7 +43,8 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function(){
-            $('#clientform').on("submit",function(){
+            $('#clientform').on("submit",function(e){
+            e.preventDefault();
             var name=document.getElementById("name").value;
             var lastName=document.getElementById("lname").value;
             var email=document.getElementById("email").value;
