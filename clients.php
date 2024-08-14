@@ -9,6 +9,7 @@
 </head>
 <body><br>
 <a href="addClient.php"  class="btn btn-primary" >add a client </a>
+<a href="index.php"  class="btn btn-primary" >home </a>
 <section class="mt-section" >
         <div class="row">
             <table id="tabclient" class="table table-striped"> <thead><tr>
