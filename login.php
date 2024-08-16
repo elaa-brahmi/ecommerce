@@ -43,20 +43,15 @@ session_start();
         },
         success: function(response) {
             console.log(response);
-
             if (response === 'success_admin') {
                 alert("welcome admin");
                 window.location.href = 'index.php';
-
             } 
             else if (response === 'success_client') {
                 alert("welcome client");
                 window.location.href = 'index.php';
-
-            }
-            
+            } 
             else {
-                
                 alert('Invalid login or password');
             }
         },
