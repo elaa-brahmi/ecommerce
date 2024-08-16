@@ -1,6 +1,6 @@
 <!doctype html>
 <?php
-include "php/authentification.php";
+session_start();
 ?>
 <html>
 <head>
@@ -27,41 +27,54 @@ include "php/authentification.php";
         <a href="#" class="brand-logo"><img src="img/logo.png" style="width:85px; margin-top:-10px;"></a>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
-            <li><a href="">home</a></li>
-            <?php
-            if(isset($_SESSION["role"]) && $_SESSION["role"] =="admin"){
-                echo '<li><a href="clients.php">see clients</a></li>';}
-            ?>
-            <li><a href="about.html">about</a></li>
-            <li><a href="panier.php">cart</a></li>
-            <li><a href="profile.php">profile</a></li>
-        </ul>
+            <li><a href="index.php">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <?php if (isset($_SESSION["role"]) && $_SESSION["role"] == "admin") { ?>
+                <li><a href="clients.php">See Clients</a></li>
+            <?php } ?>
+            <?php if (isset($_SESSION["role"]) && $_SESSION["role"] == "client") { ?>
+                <li><a href="profile.php">Profile</a></li>
+            <?php } ?>
+            <li><a href="panier.php">Cart</a></li>
+            <?php if (isset($_SESSION["role"])) { ?>
+                <li><a href="logOut.php">Log Out</a></li>
+            <?php } ?>
+        </ul>    
     </div>
+    <?php if (!isset($_SESSION["role"])) { ?>
+        <a href="login.php"><img src="img/login-avatar.png" style="width:30px; height:30px; position:absolute; top:40px; right:30px;"></a>
+    <?php } ?>
 </nav>
 
 <div class="div1">
-    <p>
-        <h1>SHOP ALL</h1>
-        Clean, vegan, cruelty-free skincare
-    </p>
+    <h1>SHOP ALL</h1>
+    <p>Clean, vegan, cruelty-free skincare</p>
 </div>
+
 <div class="div2">
-    <h3 style="text-align:center;"> Best Sellers</h3>
-    <table id="tabproduct" style=" width:1000px; margin:auto; font-size:17px;">
-        <thead><tr>
-            <th>id product</th>
-            <th>name</th> <th>quantity</th>
-            <th>description</th>
-            <th>price</th>
-            <th>picture</th>
-            <th>state</th>
-        </tr></thead><tbody></tbody>
+    <h3 style="text-align:center;">Best Sellers</h3>
+    <table id="tabproduct" style="width:1000px; margin:auto; font-size:17px;">
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Picture</th>
+                <th>State</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
     </table>
+    <?php if (isset($_SESSION["role"]) && $_SESSION["role"] == "admin") { ?>
+        <a href="addProduct.php" class="btn btn-primary">Add a Product</a>
+    <?php } ?>
 </div>
+
 <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
 <script>
-    
     $(document).ready(function() {
         var table = $('#tabproduct').DataTable({
             "ajax": {
@@ -84,40 +97,37 @@ include "php/authentification.php";
                 {
                     "data": "etat",
                     "render": function(data, type, row) {
-                        <?php if($_SESSION["role"]=="client") { ?>
-                            if(data == "add to bag") {
-                                return "<button class='add-to-bag'>add to bag</button>";
+                        <?php if (isset($_SESSION["role"]) && $_SESSION["role"] == "client") { ?>
+                            if (data == "add to bag") {
+                                return "<button class='add-to-bag'>Add to Bag</button>";
                             } else {
-                                return "coming soon";
+                                return "Coming Soon";
                             }
-                       
-                        <?php  } else { ?>
+                        <?php } else { ?>
                             return data;
                         <?php } ?>
-                }
+                    }
                 }
             ]
         });
+
         $('#tabproduct').on('click', '.add-to-bag', function() {
             var idProduct = $(this).closest('tr').find('td:first').text();
-            var name= $(this).closest('tr').find('td:eq(1)').text();
-            var quantity= $(this).closest('tr').find('td:eq(2)').text();
-            var price  = $(this).closest('tr').find('td:eq(4)').text();
-            console.log(idProduct);
-            console.log(price);
-            console.log(quantity);
+            var name = $(this).closest('tr').find('td:eq(1)').text();
+            var quantity = $(this).closest('tr').find('td:eq(2)').text();
+            var price = $(this).closest('tr').find('td:eq(4)').text();
             $.ajax({
                 url: "./php/commandeModule/addtopanier.php",
                 type: "POST",
                 data: {
-                    name:name,
+                    name: name,
                     idProduct: idProduct,
-                    price:price,
-                    quantity:quantity
+                    price: price,
+                    quantity: quantity
                 },
                 success: function(response) {
                     console.log(response);
-                    alert("added successfully");
+                    alert("Added to cart successfully");
                 },
                 error: function(xhr, status, error) {
                     console.log('AJAX Error: ' + error);
@@ -137,7 +147,6 @@ include "php/authentification.php";
             });
         });
     });
-   
 </script>
 </body>
 </html>
