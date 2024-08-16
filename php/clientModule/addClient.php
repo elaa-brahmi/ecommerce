@@ -19,14 +19,14 @@ $stmt->bindParam(5, $adress);
 $stmt->bindParam(6, $hashedPassword);
 $stmt->execute();
 $idClient = $pdo->lastInsertId();
-$reqUser = "INSERT INTO user (login, password, id, role) VALUES (?, ?, ?, 'client')";
+$reqUser = "insert into user (login, password, id, role) values (?, ?, ?, 'client')";
     $stmtUser = $pdo->prepare($reqUser);
     $stmtUser->bindParam(1, $name);
     $stmtUser->bindParam(2, $hashedPassword);
     $stmtUser->bindParam(3, $idClient);
     $stmtUser->execute();
 
-    // Commit the transaction
+    
     $pdo->commit();
 }
 catch(PDOException $e){
