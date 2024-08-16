@@ -32,6 +32,7 @@ try {
     $stmtUser->bindParam(3, $idClient);
     $stmtUser->execute();
 
+
     // Commit the transaction
     $pdo->commit();
     $_SESSION["id"]=$idClient;
