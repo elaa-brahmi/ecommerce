@@ -10,5 +10,11 @@ $stmt->execute();
 $client=$stmt->fetch();
 if($client){
     echo json_encode($client);
-}}
+}
+else {
+    echo json_encode(["error" => "Client not found"]);
+}
+
+
+}
 ?>
