@@ -4,40 +4,32 @@ session_start();
 ?>
 <html>
 <head>
-    <style>
-        .product-image-wrapper {
-            position: relative;
-            width: 180px;
-            height: 160px;
-            overflow: hidden;
-        }
-        .product-image {
-            width: 100%;
-            height: 100%;
-            transition: transform 0.3s ease;
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css?<? time() ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 <body style="background-color: #eeebe8;">
-<nav style="border-radius:20px; width:700px; margin:auto; margin-top:25px; background-color: #D8C3A5;">
+<nav style="border-radius:20px; width:700px; margin:auto; color:black; margin-top:25px; background-color: #D8C3A5;">
     <div class="nav-wrapper" style="font-weight:bold; font-size:35px; color:black;">
         <a href="#" class="brand-logo"><img src="img/logo.png" style="width:85px; margin-top:-10px;"></a>
         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
         <ul class="right hide-on-med-and-down">
-            <li><a href="index.php">Home</a></li>
-            <li><a href="about.html">About</a></li>
+            <li><a href="index.php" style="color:black !important;">Home</a></li>
+            <li><a href="about.php" style="color:black !important;">About</a></li>
             <?php if (isset($_SESSION["role"]) && $_SESSION["role"] == "admin") { ?>
-                <li><a href="clients.php">See Clients</a></li>
+                <li><a href="clients.php" style="color:black !important;">See Clients</a></li>
+                <li><a href="seeCommands.php" style="color:black !important;">See list of commands </a></li>
             <?php } ?>
             <?php if (isset($_SESSION["role"]) && $_SESSION["role"] == "client") { ?>
-                <li><a href="profile.php">Profile</a></li>
+                <li><a href="profile.php" style="color:black !important;">Profile</a></li>
+               
             <?php } ?>
-            <li><a href="panier.php">Cart</a></li>
+            <?php if (!isset($_SESSION["role"]) || $_SESSION["role"] != "admin") { ?>
+                <li><a href="panier.php" style="color:black !important;">Cart</a></li>
+            <?php } ?>
+
             <?php if (isset($_SESSION["role"])) { ?>
-                <li><a href="logOut.php">Log Out</a></li>
+                <li><a href="logOut.php" style="color:black !important;">Log Out</a></li>
             <?php } ?>
         </ul>    
     </div>
@@ -45,12 +37,10 @@ session_start();
         <a href="login.php"><img src="img/login-avatar.png" style="width:30px; height:30px; position:absolute; top:40px; right:30px;"></a>
     <?php } ?>
 </nav>
-
 <div class="div1">
     <h1>SHOP ALL</h1>
     <p>Clean, vegan, cruelty-free skincare</p>
 </div>
-
 <div class="div2">
     <h3 style="text-align:center;">Best Sellers</h3>
     <table id="tabproduct" style="width:1000px; margin:auto; font-size:17px;">
@@ -58,7 +48,8 @@ session_start();
             <tr>
                 <th>Product ID</th>
                 <th>Name</th>
-                <th>Quantity</th>
+                <th>Available Quantity</th>
+                <th>Desired Quantity</th>
                 <th>Description</th>
                 <th>Price</th>
                 <th>Picture</th>
@@ -86,6 +77,11 @@ session_start();
                 {"data": "idProduct"},
                 {"data": "name"},
                 {"data": "quantity"},
+                {
+                    "data": null,
+                    "render": function(data, type, row) {
+                        return '<input type="number" class="desired-quantity" value="1" min="1" max="' + row.quantity + '">';
+                    }},
                 {"data": "description"},
                 {"data": "price"},
                 {
@@ -97,10 +93,11 @@ session_start();
                 {
                     "data": "etat",
                     "render": function(data, type, row) {
-                        <?php if (isset($_SESSION["role"]) && $_SESSION["role"] == "client") { ?>
+                        <?php if ( isset($_SESSION["role"]) && $_SESSION["role"] == "client" || !isset($_SESSION["role"])) { ?>
                             if (data == "add to bag") {
                                 return "<button class='add-to-bag'>Add to Bag</button>";
-                            } else {
+                            }
+                            else {
                                 return "Coming Soon";
                             }
                         <?php } else { ?>
@@ -110,43 +107,61 @@ session_start();
                 }
             ]
         });
-
         $('#tabproduct').on('click', '.add-to-bag', function() {
-            var idProduct = $(this).closest('tr').find('td:first').text();
-            var name = $(this).closest('tr').find('td:eq(1)').text();
-            var quantity = $(this).closest('tr').find('td:eq(2)').text();
-            var price = $(this).closest('tr').find('td:eq(4)').text();
-            $.ajax({
-                url: "./php/commandeModule/addtopanier.php",
-                type: "POST",
-                data: {
-                    name: name,
-                    idProduct: idProduct,
-                    price: price,
-                    quantity: quantity
-                },
-                success: function(response) {
-                    console.log(response);
-                    alert("Added to cart successfully");
-                },
-                error: function(xhr, status, error) {
-                    console.log('AJAX Error: ' + error);
-                }
-            });
-        });
+        var button = $(this); 
 
+        $.ajax({
+            url: './php/clientModule/check_session.php',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response === "true") {
+                    
+                    var idProduct = button.closest('tr').find('td:first').text();
+                    var name = button.closest('tr').find('td:eq(1)').text();
+                    var desiredQuantity = parseInt(button.closest('tr').find('.desired-quantity').val());
+                    var price = button.closest('tr').find('td:eq(5)').text().trim();
+                    price = parseFloat(price.replace('$', ''));
+                    
+                    var cart = JSON.parse(localStorage.getItem('cart')) || {};
+
+                    if (cart[idProduct]) {
+                        cart[idProduct].quantity += desiredQuantity;
+                    } else {
+                        var p = price * desiredQuantity;
+                        
+                        cart[idProduct] = {
+                            idProduct: idProduct,
+                            name: name,
+                            quantity: desiredQuantity,
+                            price: p
+                        };
+                    }
+
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    alert("Added to cart successfully");
+                } else {
+                  
+                    window.location.href = 'login.php';
+                }
+            },
+            error: function() {
+                alert('An error occurred while checking session status.');
+            }
+        });
+    });
+        });
         $('#tabproduct').on('mouseover', '.product-image', function() {
             $(this).css({
                 transform: 'scale(1.4)'
             });
         });
-
         $('#tabproduct').on('mouseout', '.product-image', function() {
             $(this).css({
                 transform: 'scale(1)'
             });
         });
-    });
+    
 </script>
 </body>
 </html>
