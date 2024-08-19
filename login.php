@@ -12,6 +12,7 @@ session_start();
 
 </head>
 <body style="background-color:#D7BDE2;">
+    <p style="text-align:center;">please log in first</p>
 <form  method ='POST' id="loginform" style="width:500px; margin:auto; margin-top:50px;">
   <div class="mb-3">
     <label for="exampleInputEmail1" class="form-label">login</label>
