@@ -8,6 +8,7 @@ $email = $_POST["email"];
 $phone = $_POST["phone"];
 $adress = $_POST["adress"];
 $password = $_POST["password"];
+$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 try {
     // Start a transaction
@@ -20,7 +21,7 @@ try {
     $stmtClient->bindParam(3, $email);
     $stmtClient->bindParam(4, $phone);
     $stmtClient->bindParam(5, $adress);
-    $stmtClient->bindParam(6, $password);
+    $stmtClient->bindParam(6, $hashedPassword);
     $stmtClient->execute();
     // Get the auto-incremented idClient
     $idClient = $pdo->lastInsertId();
@@ -28,7 +29,7 @@ try {
     $reqUser = "INSERT INTO user (login, password, id, role) VALUES (?, ?, ?, 'client')";
     $stmtUser = $pdo->prepare($reqUser);
     $stmtUser->bindParam(1, $name);
-    $stmtUser->bindParam(2, $password);
+    $stmtUser->bindParam(2, $hashedPassword);
     $stmtUser->bindParam(3, $idClient);
     $stmtUser->execute();
 
