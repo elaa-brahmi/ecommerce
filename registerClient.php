@@ -14,29 +14,29 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="name">
+                    <input type="text" class="form-control" id="name" required>
                 </div>
                 <div class="mb-3">
                     <label for="lname" class="form-label">Last Name</label>
-                    <input type="text" class="form-control" id="lname">
+                    <input type="text" class="form-control" id="lname" required>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email">
+                    <input type="email" class="form-control" id="email" required>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="phone" class="form-label">Phone Number</label>
-                    <input type="text" class="form-control" id="phone">
+                    <input type="number" class="form-control" id="phone" required>
                 </div>
                 <div class="mb-3">
                     <label for="adress" class="form-label">Address</label>
-                    <input type="text" class="form-control" id="adress">
+                    <input type="text" class="form-control" id="adress" required>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password">
+                    <input type="password" class="form-control" id="password" required>
                 </div>
             </div>
         </div>

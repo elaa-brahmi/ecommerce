@@ -26,7 +26,7 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="phone" class="form-label">Phone Number</label>
-                    <input type="text" class="form-control" id="phone" >
+                    <input type="number" class="form-control" id="phone" >
                 </div>
                 <div class="mb-3">
                     <label for="adress" class="form-label">Address</label>

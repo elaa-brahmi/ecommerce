@@ -45,9 +45,8 @@ session_start();
                 <th>email</th>
                 <th>adress</th>
                 <th>date commande</th>
-                <th>id product</th>
-                <th>quantity</th>
-                <th>price</th>
+                <th>products ordered</th>
+                <th>total price</th>
 </tr></thead>
 <tbody></tbody>
 </table>
@@ -67,15 +66,16 @@ session_start();
                 {'data':'lastName'},
                 {'data':'email'},
                 {'data':'adress'},
-                {'data':'dateCommande'},
-                {'data':'idProduct'},
-                {'data':'quantity'},
-                {'data':'price'}
+                {'data':'orderDates'},
+                {'data':'productsOrdered'},
+                {'data':'totalPrice'}
+               
 
             ]
       });  }); 
-    </script>
 
+    </script>
+</body></html>
 
 
 
