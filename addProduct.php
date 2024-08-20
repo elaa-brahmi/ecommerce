@@ -10,29 +10,29 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="name" class="form-label">product's name</label>
-                    <input type="text" class="form-control" id="name">
+                    <input type="text" class="form-control" id="name" required>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">description</label>
-                    <input type="text" class="form-control" id="description" >
+                    <input type="text" class="form-control" id="description" required>
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">price</label>
-                    <input type="text" class="form-control" id="price" >
+                    <input type="text" class="form-control" id="price" required >
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="quantity" class="form-label">quantity</label>
-                    <input type="text" class="form-control" id="quantity" >
+                    <input type="number" class="form-control" id="quantity" required>
                 </div>
                 <div class="mb-3">
                     <label for="etat" class="form-label">etat</label>
-                    <input type="text" class="form-control" id="etat" >
+                    <input type="text" class="form-control" id="etat" required >
                 </div>
                 <div class="mb-3">
                     <label for="picture" class="form-label">picture</label>
-                    <input type="file" class="form-control" id="picture" >
+                    <input type="file" class="form-control" id="picture" required >
                 </div>
             </div>
         </div>
